@@ -131,7 +131,7 @@ R에서 입력과 출력
 `print()` 함수와 `cat()` 함수
 
 -   화면에서 프로그램의 처리 결과를 확인하는 가장 간단한 방법은 결과가 담긴 변수의 내용을 출력하는 것.
--   `print()`함수와 `cat()`함수의 차이점.
+-   `print()` 함수와 `cat()` 함수의 차이점.
     | 함수명 | 용도 | 출력 | 특징 |
     | --------- | ---------------------------------------- | ----------------------------------------------- | -------------------------------------- |
     | `print()` | 하나의 값을 출력할 때 사용됨 | 데이터 프레임과 같은 2차원 자료구조를 출력 | 출력 후 자동 줄 바꿈 |
@@ -561,7 +561,7 @@ brew install --cask rstudio
 ---
 
 <br>
-<div align="center" style="opacity: 0.7">
+<div align="center">
 <p>대림대학교 스마트소프트웨어학과 실무프로젝트(I)</p>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FEtihadStadium%2F23-Project1-R&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)

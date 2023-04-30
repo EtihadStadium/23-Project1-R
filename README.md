@@ -5,6 +5,186 @@
 <img src="https://img.shields.io/badge/RStudio-75AADB?style=for-the-badge&logo=RStudio&logoColor=white">
 </div><br>
 
+## 2023년 4월 27일
+
+<p></p>
+
+### 막대그래프 그리기
+
+막대그래프 작성의 기초
+
+-   데이터가 포함하고 있는 정보를 이해하기 쉽게 표현하는 과정을 데이터 시각화라고 한다.
+-   막대그래프는 그룹별로 집계된 데이터를 표현하는 도구이기 때문에 막대그래프를 작성하기 위해서는 먼저 그룹별로 데이터를 집계하는 작업이 필요하다.
+-   도수분포표 계산하기.
+    ```r
+    fav = c("A", "A", "A", "A", "B", "B", "B", "C", "C", "D", "D", "D", "D", "D")
+    fav
+    table(fav)
+    ```
+-   막대그래프 작성하기.
+    ```r
+    ds = table(fav)
+    barplot(ds, main = "favorite")
+    ```
+-   실행 결과.
+    ![0](0.png)
+-   막대그래프 작성의 여러 가지 속성.
+    ```r
+    barplot(
+      ds,
+      main = "favorite",
+      col = rainbow(4),                 #색상 지정
+      xlab = "xlab", ylab = "ylab",     #색인 지정
+      horiz = TRUE,                     #막대그래프를 수평 방향으로 출력
+      names = c("1", "2", "3", "4"),    #X축 그룹의 이름 지정
+      las = 2                           #X축 그룹 이름의 출력 방향 지정
+      )
+    ```
+-   실행 결과.
+    ![0](1.png)
+
+중첩 그룹의 막대그래프
+
+-   중첩 그룹의 막대그래프 그리기.
+    ```r
+    age.A = c(13709, 10974, 7979, 5000, 4250)
+    age.B = c(17540, 29701, 36209, 33947, 24487)
+    age.C = c(991, 2195, 5366, 12980, 19007)
+    ds = rbind(age.A, age.B, age.C)
+    colnames(ds) = c("1970", "1990", "2010", "2030", "2050")
+    barplot(ds, main = "Population", col = rainbow(3), beside = TRUE, legend.text = TRUE)
+    ```
+-   실행 결과.
+    ![0](2.png)
+-   범례를 그래프 밖에 표시하기.
+    ```r
+    par(mfrow = c(1, 1), mar = c(5, 5, 5, 7))
+    barplot(
+        ds,
+        main = "Population",
+        col = rainbow(3),
+        beside = TRUE,
+        legend.text = TRUE,
+        args.legend = list(x = "topright", bty = "n", inset = c (-0.2, 0))
+        )
+    ```
+-   실행 결과.
+    ![0](3.png)
+
+### 히스토그램 그리기
+
+히스토그램 작성
+
+-   히스토그램은 외관상으로는 막대그래프와 유사하지만, 그룹이 명시적으로 존재하지 않는 수치형 자료의 분포를 시각화할 때 사용된다.
+-   `hist()` 함수를 통해 히스토그램을 작성한다.
+    ```r
+    head(cars)
+    dist = cars[, 2]
+    dist
+    hist(
+      dist,
+      main = "cars",
+      xlab = "Braking distance",
+      ylab = "Frequency",
+      border = "blue",
+      col = "green",
+      las = 2,
+      breaks = 5 #히스토그램의 막대 개수 조절
+      )
+    ```
+-   실행 결과.
+    ![0](4.png)
+-   `cars` 데이터셋은 자동차의 주행속도에 따른 제동거리 데이터를 저장하고 있는 데이터 프레임.
+-   히스토그램은 외관상 막대그래프와 유사하나 일반적으로 막대 사이에 간격이 있으면 막대그래프, 간격이 없이 붙어있으면 히스토그램이라고 구분할 수 있다.
+-   막대그래프에서는 막대의 면적이 의미가 없지만, 히스토그램에서는 막대의 면적이 의미를 가진다.
+
+구간별 빈도수를 도수분포표 형태로 출력
+
+-   구간별 빈도수를 도수분포표 형태로 출력하기.
+    ```r
+    result = hist(dist, main = "cars", breaks = 5)
+    freq = result$counts
+    names(freq) = result$breaks[-1]
+    freq
+    ```
+
+### 여러 가지 형태의 그래프
+
+다중그래프 작성
+
+-   하나의 창에 여러 개의 그래프를 동시에 출력해 비교할 수 있다.
+    ```r
+    par(mfrow = c(2, 2), mar = c(3, 3, 4, 2)) #화면 분할
+    hist(iris$Sepal.Length, main = "Sepal.Length", col = "orange")
+    barplot(table(mtcars$cyl), main = "mtcars", col = c("red", "green", "blue"))
+    barplot(table(mtcars$gear), main = "mtcars", col = rainbow(3), horiz = TRUE)
+    pie(table(mtcars$cyl), main = "btcars", col = topo.colors(3), radius=2)
+    ```
+-   실행 결과.
+    ![0](5.png)
+
+그래프를 파일에 저장하기
+
+-   `plot` 창에 생성된 그래프에 우클릭 후 그래프를 복사해 다른 파일에 저장한다.
+-   `plot` 창에 생성된 그래프에 우클릭 후 `Save Image as`를 클릭해 이미지로 저장한다.
+-   `plot` 창의 `Export` 메뉴를 클릭하여 원하는 확장자로 저장한다.
+
+원그래프
+
+-   원그래프는 하나의 원 안에 데이터 값이 차지하는 비율을 넓이로 나타낸 그래프이다.
+-   원그래프 작성하기.
+    ```r
+    fav = c("A", "A", "A", "A", "B", "B", "B", "C", "C", "D", "D", "D", "D", "D")
+    ds = table(fav)
+    pie(ds, main = "ABCD", radius = 1)
+    ```
+-   실행 결과.
+    ![0](6.png)
+-   원그래프 조각 색 지정하기.
+    ```r
+    pie(ds, main = "ABCD", col = c("brown", "green", "red", "black"), radius = 1)
+    ```
+-   3차원 원그래프 작성하기.
+    ```r
+    install.packages("plotrix")
+    library(plotrix)
+    pie3D(
+      ds,
+      main = "ABCD",
+      labels = names(ds),
+      labelcex = 1.0,
+      explode = 0.1,
+      radius = 1.5,
+      col = rainbow(4)
+      )
+    ```
+-   실행 결과.
+    ![0](7.png)
+
+선그래프
+
+-   일반적으로 시간의 변화에 따라 수집된 데이터를 시각화하는 데 주로 사용된다.
+-   시간 변화에 따라 데이터를 수집한 경우 이를 시계열 데이터라고 부른다.
+-   하나의 선그래프 작성하기.
+    ```r
+    month = 1:12
+    late = c(5, 8, 7, 9, 4, 6, 12, 13, 8, 6, 6, 4)
+    plot(
+        month,
+        late,
+        main = "Late",
+        type = "l",
+        lty = 1,
+        lwd = 1,
+        xlab = "Month",
+        ylab = "Late cnt"
+        )
+    ```
+-   실행 결과.
+    ![0](8.png)
+
+<p></p>
+
 ## 2023년 4월 13일
 
 <p></p>
@@ -662,3 +842,5 @@ brew install --cask rstudio
 <p>대림대학교 스마트소프트웨어학과 실무프로젝트(I)</p>
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FEtihadStadium%2F23-Project1-R&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
 </div><br>
+
+[def]: 0.png

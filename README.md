@@ -27,7 +27,7 @@
     barplot(ds, main = "favorite")
     ```
 -   실행 결과.
-    ![0](0.png)
+    ![0](img/0.png)
 -   막대그래프 작성의 여러 가지 속성.
     ```r
     barplot(

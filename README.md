@@ -5,6 +5,119 @@
 <img src="https://img.shields.io/badge/RStudio-75AADB?style=for-the-badge&logo=RStudio&logoColor=white">
 </div><br>
 
+## 2023년 5월 11일
+
+<p></p>
+
+### 다중 변수 데이터
+
+변수 간의 관계를 찾는 것이 중요하다
+
+-   `pressure` 데이터셋을 통한 온도와 기압의 관련성 분석.
+    ```r
+    head(pressure)
+    plot(
+        pressure$temperature,
+        pressure$pressure,
+        main = "temperature and pressure",
+        xlab = 'temperature',
+        ylab = 'pressure'
+        )
+    ```
+
+두 변수가 상관관계가 있는 경우
+
+-   `x`축 변수 값이 증가하면 `y`축 변수의 값이 비례해서 증가한다.
+-   `x`축 변수 값이 증가하면 `y`축 변수의 값이 비례해서 감소한다.
+
+상관계수
+
+-   상관관계를 수치로 나타낸 `-1`에서 `1`사이의 값.
+-   상관계수가 0 : 두 변수 사이에 상관성을 찾기가 어렵다.
+-   상관계수가 음수 : 두 변수가 반비례하다. (음의 상관관계에 있다.)
+-   상관계수가 양수 : 두 변수가 비례하다. (양의 상관관계에 있다.)
+
+`cars` 데이터셋을 이용한 산점도와 상관계수 계산
+
+-   상관계수 계산하기.
+
+    ```r
+    head(cars)
+    plot(
+        cars$speed,
+        cars$dist,
+        main = "Speed and Braking distance",
+        xlab = "Speed",
+        ylab = "Braking distance",
+        )
+    cor(cars$speed, cars$dist)
+    st = data.frame(state.x77)
+    head(st)
+    plot(st)
+    cor(st)
+    ```
+
+### 데이터 전처리
+
+데이터 전처리
+
+-   현실에선 확보한 데이터를 정제 및 가공해야 분석에 적합한 데이터가 되는데 이 과정을 데이터 전처리라고 함.
+-   데이터 전처리는 전체 분석 과정에서 오랜 시간을 차지함.
+-   결측값은 데이터의 수집 및 저장 과정에서 값을 얻지 못하는 경우 발생함.
+-   결측값은 `R`에서 `NA`로 표현되며 데이터를 분석할 때 여러 문제를 일으킴.
+-   결측값은 제거 및 제외하고 분석하거나 적당한 값으로 치환한 후 분석함.
+
+벡터의 결측값
+
+-   벡터의 결측값.
+    ```r
+    z = c(1, 2, 3, NA, 5, NA, 8)
+    sum(z)
+    is.na(z)
+    sum(is.na(z))
+    sum(z, na.rm = TRUE)
+    ```
+-   `NA`를 다른 값으로 대체하거나 제거하는 방법.
+    ```r
+    z1 = c(1, 2, 3, NA, 5, NA, 8)
+    z2 = c(5, 8, 1, NA, 3, NA, 7)
+    z1[is.na(z1)] = 0
+    z1
+    z3 = as.vector(na.omit(z2))
+    z3
+    ```
+
+매트릭스와 데이터프레임의 결측값
+
+-   매트릭스와 데이터프레임의 결측값.
+
+    ```r
+    x = iris
+    x[1, 2] = NA
+    x[1, 3] = NA
+    x[2, 3] = NA
+    x[3, 4] = NA
+    head(x)
+    for (i in 1 : ncol(x)) {
+        this.na = is.na(x[, i])
+        cat(colnames(x)[i], "\t", sum(this.na), "\n")
+    }
+    col_na = function(y) {
+        return(sum(is.na(y)))
+    }
+    na_count = apply(x, 2, FUN = col_na)
+    na_count
+    rowSums(is.na(x))
+    sum(rowSums(is.na(x)) > 0)
+    sum(is.na(x))
+    head(x)
+    x[!complete.cases(x), ]
+    y = x[complete.cases(x), ]
+    head(y)
+    ```
+
+<p></p>
+
 ## 2023년 5월 4일
 
 <p></p>

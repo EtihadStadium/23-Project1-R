@@ -5,6 +5,144 @@
 <img src="https://img.shields.io/badge/RStudio-75AADB?style=for-the-badge&logo=RStudio&logoColor=white">
 </div><br>
 
+## 2023년 5월 18일
+
+<p></p>
+
+### 정렬
+
+정렬(sort)
+
+-   주어진 기준에 따라 데이터를 크기 순으로 재배열하는 과정.
+-   숫자의 경우 숫자의 크기에 따라 정렬 가능.
+-   문자열의 경우 알파벳 순 혹은 가나다 순으로 정렬 가능.
+
+벡터의 정렬
+
+-   정렬은 기본적으로 오름차순으로 진행.
+-   내림차순으로 하려면 `sort()` 함수의 `decreasing`을 `TRUE`로 설정.
+-   `sort()` : 값의 크기에 따라 값들을 정렬하는 함수.
+    ```r
+    v1 = c(1, 7, 6, 8, 4, 2, 3)
+    v1 = sort(v1)
+    v2 = sort(v1, decreasing = T)
+    ```
+-   `order()` : 값의 크기에 따라 값들의 인덱스를 정렬하는 함수.
+    ```r
+    name = c("A", "D", "F", "T")
+    order(name)
+    order(name, decreasing = T)
+    idx = order(name)
+    name[idx]
+    ```
+
+매트릭스와 데이터프레임의 정렬
+
+-   특정 열의 값들을 기준으로 행을 재배열하는 방법.
+-   `iris` 데이터셋에서 꽃잎의 길이를 기준으로 행을 재정렬하는 예.
+    ```r
+    head(iris)
+    order(iris$Sepal.Length)
+    iris[order(iris$Sepal.Length),]
+    iris[order(iris$Sepal.Length, decreasing = T),]
+    iris.new = iris[order(iris$Sepal.Length),]
+    head(iris.new)
+    iris[order(iris$Species, decreasing = T, iris$Petal.Length),]
+    ```
+
+### 샘플링과 조합 
+
+샘플링(smapling)
+
+-   주어진 값들에서 임의의 개수만큼 값을 추출하는 작업.
+-   비복원 추출 : 한 번 뽑은 값은 제외한 뒤 새로운 값을 추출하는 방식.
+-   복원 추출 : 뽑았던 값을 다시 포함시켜 값을 추출하는 방식.
+-   `sample()` 함수는 임의 추출이기 때문에 실행할 때마다 결과가 다르다.
+    ```r
+    x = 1:100
+    y = sample(x, size = 10, replace = FALSE)
+    y
+    ```
+-   데이터셋의 크기가 너무 커 분석에 시간이 많이 걸리는 경우 일부의 데이터만 추출하여 대략의 결과를 미리 확인.
+
+조합
+
+-   주어진 데이터값 중에서 몇 개씩 짝을 지어 추출하는 작업.
+-   `combn()` 함수가 사용된다.
+    ```r
+    combn(1:5, 3)
+    x = c("red", "green", "blue", "black", "white")
+    com = combn(x, 2)
+    for(i in 1:ncol(com)) {
+        cat(com[,i], "\n")
+    }
+    ```
+
+### 데이터 집계
+
+집계(aggregation)
+
+-   데이터의 그룹에 대해서 합계나 평균을 계산하는 작업.
+-   `aggregate()` 함수를 사용.
+-   품종별 꽃잎 꽃받침의 폭과 길이의 평균.
+    ```r
+    agg = aggregate(iris[,-5], by = list(iris$Species), FUN = mean)
+    agg
+    ```
+-   품종별 꽃잎 꽃받침의 폭과 길이의 표준편차.
+    ```r
+    agg = aggregate(iris[,-5], by = list(Species = iris$Species), FUN = sd)
+    agg
+    ```
+-   2개의 기준에 대해 다른 열들의 최댓값.
+    ```r
+    head(mtcars)
+    agg = aggregate(mtcars, by = list(cyl = mtcars$cyl), vs = mtcars$vs, FUN = max)
+    agg
+    ```
+
+### 고급 그래프 작성
+
+나무 지도
+
+-   데이터 시각화는 데이터 분석 과정에서 가장 중요한 기술 중 하나.
+-   나무 지도는 사각 타일의 형태로 표현되는 시각화 도구.
+-   데이터의 정보를 타일의 크기와 색으로 나타낼 수 있음.
+-   타일들은 계층 구조로 되어 있어 데이터에 존재하는 계층 구조까지 표현 가능.
+    ```r
+    install.packages("treemap")
+    library(treemap)
+    data(GNI2014)
+    head(GNI2014)
+    treemap(
+        GNI2014,
+        index = c("continent", "iso3"),
+        vSize = "population",
+        vColor = "GNI",
+        type = "value",
+        bg.labels = "yellow",
+        title = "World's GNI"
+        )
+    ```
+-   `state.x77` 데이터셋을 사용한 나무지도.
+    ```r
+    library(treemap)
+    st = data.frame(state.x77)
+    st = data.frame(st, stname = rownames(st))
+    treemap(
+        st,
+        index = c("stname"),
+        vSize = "Area",
+        vColor = "Income",
+        type = "value",
+        title = "USA states area and income"
+        )
+    ```
+-   실행결과.
+    ![0](img/15.png)
+
+<p></p>
+
 ## 2023년 5월 11일
 
 <p></p>
